@@ -546,6 +546,11 @@ function start() {
             ")' />" +
             "</div>"
         );
+        
+        if (!data.visible) {
+          $("#id" + data.id).hide();
+        }
+        
         break;
 
       case UI_TAB:
@@ -753,7 +758,12 @@ function start() {
         break;
 
       case UPDATE_TEXT_INPUT:
-        $("#text" + data.id).val(data.value);
+        if (data.visible) {
+          $("#text" + data.id).val(data.value);
+          $("#id" + data.id).show();
+        } else {
+          $("#id" + data.id).hide();
+        }
         break;
 
       case UPDATE_SELECT:

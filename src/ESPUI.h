@@ -122,18 +122,19 @@ public:
   ControlColor color;
   uint16_t parentControl;
   Control *next;
+  bool visible;
 
   static constexpr uint16_t noParent = 0xffff;
 
   Control(ControlType type, const char *label, void (*callback)(Control *, int), String value, ControlColor color,
           uint16_t parentControl = Control::noParent)
-      : type(type), label(label), callback(callback), value(value), color(color), parentControl(parentControl), next(nullptr) {
+      : type(type), label(label), callback(callback), value(value), color(color), parentControl(parentControl), next(nullptr), visible(true) {
     id = idCounter++;
   }
 
   Control(const Control &control)
       : type(control.type), id(control.id), label(control.label), callback(control.callback), value(control.value), color(control.color),
-        parentControl(control.parentControl), next(control.next) {}
+        parentControl(control.parentControl), next(control.next), visible(control.visible) {}
 
 private:
   static uint16_t idCounter;
@@ -184,7 +185,7 @@ public:
   void list();              // Lists SPIFFS directory
 
   uint16_t addControl(ControlType type, const char *label, String value = String(""), ControlColor color = ControlColor::Turquoise,
-                      uint16_t parentControl = Control::noParent, void (*callback)(Control *, int) = nullptr);
+                      uint16_t parentControl = Control::noParent, void (*callback)(Control *, int) = nullptr, bool visible = true);
 
   // create Elements
   uint16_t button(const char *label, void (*callback)(Control *, int), ControlColor color, String value = "");         // Create Event Button
