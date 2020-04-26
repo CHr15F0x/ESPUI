@@ -16,7 +16,7 @@
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 
-#else
+#else // ESP8266
 
 #include <ArduinoOTA.h>
 #include <ESP8266WiFi.h>
@@ -29,7 +29,7 @@
 
 #define FILE_WRITE "w"
 
-#endif
+#endif // ESP8266
 
 // Message Types (and control types)
 
@@ -139,6 +139,8 @@ public:
 private:
   static uint16_t idCounter;
 };
+
+typedef void (*ESPUICallback)(Control *, int);
 
 // Values
 #define B_DOWN -1
