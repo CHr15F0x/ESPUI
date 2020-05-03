@@ -312,6 +312,13 @@ function start() {
             buttonclick(data.id, false);
           }
         });
+
+        $("#btn" + data.id).prop('disabled', !data.enabled);
+        if (data.enabled) {
+          $("#btn" + data.id).css('background-color', '#999999');
+        } else {
+          $("#btn" + data.id).css('background-color', '#dddddd');
+        }
         break;
 
       case UI_SWITCHER:
@@ -519,6 +526,11 @@ function start() {
             ")' />" +
             "</div>"
         );
+
+        if (!data.visible) {
+          $("#id" + data.id).hide();
+        }
+
         break;
 
       case UI_TEXT_INPUT:
@@ -546,11 +558,11 @@ function start() {
             ")' />" +
             "</div>"
         );
-        
+
         if (!data.visible) {
           $("#id" + data.id).hide();
         }
-        
+
         break;
 
       case UI_TAB:
@@ -754,7 +766,12 @@ function start() {
         break;
 
       case UPDATE_NUMBER:
-        $("#num" + data.id).val(data.value);
+        if (data.visible) {
+          $("#num" + data.id).val(data.value);
+          $("#id" + data.id).show();
+        } else {
+          $("#id" + data.id).hide();
+        }
         break;
 
       case UPDATE_TEXT_INPUT:
@@ -771,6 +788,14 @@ function start() {
         break;
 
       case UPDATE_BUTTON:
+        $("#btn" + data.id).prop('disabled', !data.enabled);
+        if (data.enabled) {
+          $("#btn" + data.id).css('background-color', '#999999');
+        } else {
+          $("#btn" + data.id).css('background-color', '#dddddd');
+        }
+        break;
+
       case UPDATE_PAD:
       case UPDATE_CPAD:
         break;

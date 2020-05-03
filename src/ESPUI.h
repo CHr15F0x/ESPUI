@@ -112,29 +112,31 @@ enum ControlColor : uint8_t { Turquoise, Emerald, Peterriver, Wetasphalt, Sunflo
 #define COLOR_DARK ControlColor::Dark
 #define COLOR_NONE ControlColor::None
 
+// 32 bytes
 class Control {
 public:
-  ControlType type;
-  uint16_t id; // just mirroring the id here for practical reasons
-  const char *label;
-  void (*callback)(Control *, int);
-  String value;
-  ControlColor color;
-  uint16_t parentControl;
-  Control *next;
-  bool visible;
+  ControlType type; // 1 byte
+  ControlColor color; // 1 byte
+  uint16_t id; // 2 bytes; just mirroring the id here for practical reasons
+  const char *label; // 4 bytes
+  void (*callback)(Control *, int); // 4 bytes
+  String value; // 12 bytes
+  uint16_t parentControl; // 2 bytes
+  uint8_t visible; // 1 byte
+  uint8_t enabled; // 1 byte
+  Control *next; // 4 bytes
 
   static constexpr uint16_t noParent = 0xffff;
 
   Control(ControlType type, const char *label, void (*callback)(Control *, int), String value, ControlColor color,
           uint16_t parentControl = Control::noParent)
-      : type(type), label(label), callback(callback), value(value), color(color), parentControl(parentControl), next(nullptr), visible(true) {
+      : type(type), color(color), id(0), label(label), callback(callback), value(value), parentControl(parentControl), visible(true), enabled(true), next(nullptr) {
     id = idCounter++;
   }
 
   Control(const Control &control)
-      : type(control.type), id(control.id), label(control.label), callback(control.callback), value(control.value), color(control.color),
-        parentControl(control.parentControl), next(control.next), visible(control.visible) {}
+      : type(control.type), color(control.color), id(control.id), label(control.label), callback(control.callback), value(control.value),
+        parentControl(control.parentControl), visible(control.visible), enabled(control.enabled), next(control.next) {}
 
 private:
   static uint16_t idCounter;
@@ -187,7 +189,7 @@ public:
   void list();              // Lists SPIFFS directory
 
   uint16_t addControl(ControlType type, const char *label, String value = String(""), ControlColor color = ControlColor::Turquoise,
-                      uint16_t parentControl = Control::noParent, void (*callback)(Control *, int) = nullptr, bool visible = true);
+                      uint16_t parentControl = Control::noParent, void (*callback)(Control *, int) = nullptr, bool visible = true, bool enabled = true);
 
   // create Elements
   uint16_t button(const char *label, void (*callback)(Control *, int), ControlColor color, String value = "");         // Create Event Button

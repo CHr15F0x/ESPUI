@@ -393,9 +393,10 @@ void onWsEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventTyp
 }
 
 uint16_t ESPUIClass::addControl(ControlType type, const char *label, String value, ControlColor color, uint16_t parentControl,
-                                void (*callback)(Control *, int), bool visible) {
+                                void (*callback)(Control *, int), bool visible, bool enabled) {
   Control *control = new Control(type, label, callback, value, color, parentControl);
   control->visible = visible;
+  control->enabled = enabled;
 
   if (this->controls == nullptr) {
     this->controls = control;
@@ -489,6 +490,7 @@ void ESPUIClass::updateControl(Control *control, int clientId) {
   root["id"] = control->id;
   root["color"] = (int)control->color;
   root["visible"] = control->visible;
+  root["enabled"] = control->enabled;
   serializeJson(document, json);
 
   if (this->verbosity >= Verbosity::VerboseJSON) {
@@ -644,6 +646,7 @@ void ESPUIClass::jsonDom(AsyncWebSocketClient *client) {
     item["value"] = String(control->value);
     item["color"] = (int)control->color;
     item["visible"] = control->visible;
+    item["enabled"] = control->enabled;
 
     if (control->parentControl != Control::noParent) {
       item["parentControl"] = String(control->parentControl);
