@@ -1,3 +1,13 @@
+# Introduction
+This is a fork of the great ESP-based WebUI: https://github.com/s00500/ESPUI.<br/>
+<br/>
+Minor changes were introduced to allow __dynamic hiding & disabling of some of the widgets__.<br/>
+<br/>
+Original ESPUI docs follow :)<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 # ESPUI (v2.X)
 
 ![ESPUI](https://github.com/s00500/ESPUI/blob/master/docs/ui_complete.png)
